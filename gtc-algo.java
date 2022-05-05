@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Main
 {
-    static final String target = "Prototyping is fun!";
+    static final String target = "Prototyping is fun! ";
     static final String ascii = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
     static final int initial_pop_size = 10000;
     static final int iteration_pop_size = 200;
@@ -91,9 +91,13 @@ public class Main
         return population;
     }
 
-    // todo
-    static String crossover(String individual_a, String individual_b)
+    // 2 point crossover. take 2 random points on 'chromosome'
+    // swap out middle of chromosome with other parent string
+    static String crossover(String individual_a, String individual_b, Random rand)
     {
+        int crossover_point_a = rand.nextInt((target.length()-1)/2);
+        int crossover_point_b = rand.nextInt((target.length()-1)/2) + 5;
+        System.out.println(crossover_point_a);
         return "a";
     }
 
@@ -114,6 +118,11 @@ public class Main
             {
                 bound_b--;
             }
+
+            // 2 point crossover algorithm
+            String individual = crossover(population[bound_a], population[bound_b], rand);
+
+
         }
         return population; 
     }
