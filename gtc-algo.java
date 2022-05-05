@@ -91,6 +91,7 @@ public class Main
         return population;
     }
 
+    // todo
     static String crossover(String individual_a, String individual_b)
     {
         return "a";
@@ -113,9 +114,6 @@ public class Main
             {
                 bound_b--;
             }
-
-
-
         }
         return population; 
     }
