@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Main
 {
-    static final String target = "Prototyping is fun! ";
-    static final String ascii = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
+    static final String target = "salami sausage";
+    static final String ascii = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ";
     static final int initial_pop_size = 10000;
     static final int iteration_pop_size = 200;
 
@@ -91,14 +91,41 @@ public class Main
         return population;
     }
 
-    // 2 point crossover. take 2 random points on 'chromosome'
-    // swap out middle of chromosome with other parent string
-    static String crossover(String individual_a, String individual_b, Random rand)
+    static String crossover(String individual_a, String individual_b)
     {
-        int crossover_point_a = rand.nextInt((target.length()-1)/2);
-        int crossover_point_b = rand.nextInt((target.length()-1)/2) + 5;
-        System.out.println(crossover_point_a);
-        return "a";
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random();
+        for (int i = 0; i < target.length(); i++)
+        {
+            if (rand.nextBoolean())
+            {
+                sb.append(individual_a.toCharArray()[i]);
+                continue;
+            }
+            sb.append(individual_b.toCharArray()[i]);
+        }
+        String new_individual = sb.toString();
+        return new_individual;
+    }
+
+    static String mutate(String individual)
+    {
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random();
+        for (char c: individual.toCharArray())
+        {
+            if (0 == rand.nextInt(10))
+            {
+                int index = rand.nextInt(ascii.length());
+                sb.append(ascii.toCharArray()[index]);
+            }
+            else
+            {
+                sb.append(c);
+            }
+        }
+        String mutated_individual = sb.toString();
+        return mutated_individual;
     }
 
     static String[] evolvePopulation(String[] population)
@@ -119,12 +146,12 @@ public class Main
                 bound_b--;
             }
 
-            // 2 point crossover algorithm
-            String individual = crossover(population[bound_a], population[bound_b], rand);
-
-
+            String individual = crossover(population[bound_a], population[bound_b]);
+            String mutated_individual = mutate(individual);
+            new_population.add(mutated_individual);
         }
-        return population; 
+        String[] new_population_array = new_population.toArray(new String[new_population.size()]);
+        return new_population_array; 
     }
     
     public static void main(String[] args)
@@ -138,9 +165,11 @@ public class Main
             System.out.println("============\nGeneration " + counter + "\n============\n" + population[0]);
             if (population[0].equals(target))
             {
-                break;
+                matching = true;
+                continue;
             }
             population = evolvePopulation(population);
+            population = sortForFittest(population);
             counter++;
         }
     }
