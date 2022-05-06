@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Main
 {
-    static final String target = "salami sausage";
+    static final String target = "prototyping is fun!";
     static final String ascii = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ";
     static final int initial_pop_size = 10000;
     static final int iteration_pop_size = 200;
@@ -114,7 +114,7 @@ public class Main
         Random rand = new Random();
         for (char c: individual.toCharArray())
         {
-            if (0 == rand.nextInt(10))
+            if (0 == rand.nextInt(15))
             {
                 int index = rand.nextInt(ascii.length());
                 sb.append(ascii.toCharArray()[index]);
@@ -136,7 +136,14 @@ public class Main
         {
             int bound_a = rand.nextInt(population.length-1);
             int bound_b = rand.nextInt(population.length-1);
-
+            if (bound_a < 0)
+            {
+                bound_a++;
+            }
+            if (bound_b < 0)
+            {
+                bound_b++;
+            }
             if (bound_a == bound_b && bound_b < 999)
             {
                 bound_b++;
